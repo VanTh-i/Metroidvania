@@ -1,0 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerStateList : MonoBehaviour
+{
+    public bool IsInAir = false;
+    public bool IsDashing = false;
+    public bool IsWallSliding = false;
+
+    [Header("Unlock Skill")]
+    public bool CanDoubleJumpSkill;
+    public bool CanDashSkill;
+    public bool CanWallSliding;
+}
