@@ -166,6 +166,7 @@ public class PlayerController : MonoBehaviour
         {
             playerState.IsInAir = true;
             playerState.IsWallSliding = false;
+            doubleJumpCounter = 0;
             rb.velocity = new Vector2(wallJumpingDirection * jumpForce, jumpForce);
             wallJumpingCounter = 0f;
 
@@ -224,7 +225,15 @@ public class PlayerController : MonoBehaviour
         playerState.IsDashing = true;
         playerAnimation.DashAnimation();
         rb.gravityScale = 0f;
-        rb.velocity = new Vector2(transform.parent.localScale.x * dashSpeed, 0);
+        if (IsWalled() && playerState.CanWallSliding) //dash nguoc huong dang bam tuong
+        {
+            rb.velocity = new Vector2(-transform.parent.localScale.x * dashSpeed, 0);
+            transform.parent.localScale = new Vector2(-transform.parent.localScale.x, transform.parent.localScale.y);
+        }
+        else
+        {
+            rb.velocity = new Vector2(transform.parent.localScale.x * dashSpeed, 0);
+        }
 
         yield return new WaitForSeconds(dashTime);
         rb.gravityScale = gravity;
