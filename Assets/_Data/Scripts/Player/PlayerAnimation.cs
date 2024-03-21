@@ -11,6 +11,7 @@ public class PlayerAnimation : MonoBehaviour
     private const string Falling = "Falling";
     private const string Dash = "Dash";
     private const string SideWall = "SideWall";
+    private const string Attacking = "Attacking";
 
     private void Start()
     {
@@ -41,5 +42,10 @@ public class PlayerAnimation : MonoBehaviour
     public void DashAnimation()
     {
         anim.SetTrigger(Dash);
+    }
+
+    public void AttackAnimation()
+    {
+        anim.SetTrigger(Attacking);
     }
 }

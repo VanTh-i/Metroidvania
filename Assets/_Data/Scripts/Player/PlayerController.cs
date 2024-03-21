@@ -29,13 +29,13 @@ public class PlayerController : MonoBehaviour
 
     [Header("Double Jump")]
     [SerializeField, Tooltip("so lan co the nhay them")] private int doubleJump;
-    private int doubleJumpCounter = 0;
+    protected internal int doubleJumpCounter = 0;
 
     [Header("Dash")]
     [SerializeField] private float dashSpeed;
     [SerializeField] private float dashTime;
     [SerializeField] private float dashCooldown;
-    private float gravity;
+    protected internal float gravity;
     private bool dashInput;
     private bool canDash = true;
     private bool dashed;
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponentInParent<Rigidbody2D>();
         gravity = rb.gravityScale;
-        playerState = GetComponent<PlayerStateList>();
+        playerState = transform.parent.GetComponentInChildren<PlayerStateList>();
         playerAnimation = transform.parent.GetComponentInChildren<PlayerAnimation>();
     }
     private void Update()
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
     {
         jumpInputDown = InputManager.Instance.JumpInputDown;
         jumpInputUp = InputManager.Instance.JumpInputUp;
-        moveInput = InputManager.Instance.MoveInput;
+        moveInput = InputManager.Instance.MoveInputHorizontal;
         dashInput = InputManager.Instance.DashInput;
     }
 
@@ -79,10 +79,12 @@ public class PlayerController : MonoBehaviour
         if (moveInput < 0)
         {
             transform.parent.localScale = new Vector2(-1, transform.parent.localScale.y);
+            playerState.LookingRight = false;
         }
         else if (moveInput > 0)
         {
             transform.parent.localScale = new Vector2(1, transform.parent.localScale.y);
+            playerState.LookingRight = true;
         }
     }
 
@@ -101,6 +103,11 @@ public class PlayerController : MonoBehaviour
             playerState.IsInAir = true;
         }
 
+        DoubleJump();
+    }
+
+    private void DoubleJump()
+    {
         if (playerState.IsInAir && !Grounded() && jumpInputDown && doubleJumpCounter < doubleJump
             && playerState.CanDoubleJumpSkill) // double jump
         {
@@ -108,30 +115,15 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector3(rb.velocity.x, jumpForce);
             playerState.IsInAir = true;
         }
-
     }
 
-    protected internal bool Grounded() //check co dang dung tren mat dat hay khong
-    {
-        if (Physics2D.Raycast(groundCheckPoint.position, Vector2.down, groundCheckY, groundLayer)
-            || Physics2D.Raycast(groundCheckPoint.position + new Vector3(groundCheckX, 0, 0), Vector2.down, groundCheckY, groundLayer)
-            || Physics2D.Raycast(groundCheckPoint.position + new Vector3(-groundCheckX, 0, 0), Vector2.down, groundCheckY, groundLayer)
-            )
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public void WallSlide()
+    public void WallSlide() // khi dang truot tuong
     {
         if (IsWallSlide())
         {
             playerState.IsWallSliding = true;
             playerState.IsInAir = false;
+            doubleJumpCounter = 0;
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
         }
         else
@@ -139,8 +131,7 @@ public class PlayerController : MonoBehaviour
             playerState.IsWallSliding = false;
         }
     }
-
-    protected internal bool IsWallSlide()
+    protected internal bool IsWallSlide() // co dang truot tuong hay khong
     {
         if (IsWalled() && !Grounded() && moveInput != 0f && playerState.CanWallSliding && !jumpInputDown)
         {
@@ -148,7 +139,6 @@ public class PlayerController : MonoBehaviour
         }
         else return false;
     }
-
     public void WallJump()
     {
         if (playerState.IsWallSliding)
@@ -176,13 +166,27 @@ public class PlayerController : MonoBehaviour
                 localScale.x *= -1f;
                 transform.localScale = localScale;
             }
-
         }
     }
 
-    private bool IsWalled()
+    private bool IsWalled() // kiem tra player co cham vao layer tuong hay ko
     {
         return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
+    }
+
+    protected internal bool Grounded() //check co dang dung tren mat dat hay khong
+    {
+        if (Physics2D.Raycast(groundCheckPoint.position, Vector2.down, groundCheckY, groundLayer)
+            || Physics2D.Raycast(groundCheckPoint.position + new Vector3(groundCheckX, 0, 0), Vector2.down, groundCheckY, groundLayer)
+            || Physics2D.Raycast(groundCheckPoint.position + new Vector3(-groundCheckX, 0, 0), Vector2.down, groundCheckY, groundLayer)
+            )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private void JumpMechanics() //Jump Buffer and Coyote Time
@@ -243,7 +247,6 @@ public class PlayerController : MonoBehaviour
         canDash = true;
 
     }
-
     public void StatDash()
     {
         if (dashInput && canDash && !dashed && playerState.CanDashSkill)

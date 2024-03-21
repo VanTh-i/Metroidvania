@@ -7,8 +7,11 @@ public class InputManager : MonoBehaviour
     private static InputManager instance;
     public static InputManager Instance { get => instance; private set => instance = value; }
 
-    private float moveInput;
-    public float MoveInput { get => moveInput; private set => moveInput = value; }
+    private float moveInputHorizontal;
+    public float MoveInputHorizontal { get => moveInputHorizontal; private set => moveInputHorizontal = value; }
+
+    private float moveInputVertical;
+    public float MoveInputVertical { get => moveInputVertical; private set => moveInputVertical = value; }
 
     private bool jumpInputDown;
     public bool JumpInputDown { get => jumpInputDown; private set => jumpInputDown = value; }
@@ -19,6 +22,8 @@ public class InputManager : MonoBehaviour
     private bool dashInput;
     public bool DashInput { get => dashInput; private set => dashInput = value; }
 
+    private bool attackInput;
+    public bool AttackInput { get => attackInput; private set => attackInput = value; }
 
     private void Awake()
     {
@@ -31,15 +36,21 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        GetKeyInput();
+        GetKeyInputHorizontal();
+        GetKeyInputVertical();
         GetSpaceInputDown();
         GetSpaceInputUp();
         GetDashInput();
+        GetAttackInput();
     }
 
-    public float GetKeyInput()
+    public float GetKeyInputHorizontal()
     {
-        return moveInput = Input.GetAxisRaw("Horizontal");
+        return moveInputHorizontal = Input.GetAxisRaw("Horizontal");
+    }
+    public float GetKeyInputVertical()
+    {
+        return moveInputVertical = Input.GetAxisRaw("Vertical");
     }
 
     public bool GetSpaceInputDown()
@@ -56,4 +67,10 @@ public class InputManager : MonoBehaviour
     {
         return dashInput = Input.GetKeyDown(KeyCode.LeftControl);
     }
+
+    public bool GetAttackInput()
+    {
+        return attackInput = Input.GetMouseButtonDown(0);
+    }
+
 }

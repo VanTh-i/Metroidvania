@@ -6,11 +6,13 @@ public class Player : MonoBehaviour
 {
     private PlayerController playerController;
     private PlayerAnimation playerAnimation;
+    private PlayerCombat playerCombat;
 
     private void Start()
     {
         playerController = GetComponentInChildren<PlayerController>();
         playerAnimation = GetComponentInChildren<PlayerAnimation>();
+        playerCombat = GetComponentInChildren<PlayerCombat>();
     }
 
     private void Update()
@@ -22,6 +24,8 @@ public class Player : MonoBehaviour
         playerController.WallSlide();
         playerController.WallJump();
         playerController.StatDash();
+
+        playerCombat.Attack();
 
         playerAnimation.RunAnimation();
         playerAnimation.JumpAnimation();
