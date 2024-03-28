@@ -72,6 +72,7 @@ public class PlayerController : MonoBehaviour
     {
         Flip();
         rb.velocity = new Vector2(moveSpeed * moveInput, rb.velocity.y);
+
     }
 
     private void Flip()

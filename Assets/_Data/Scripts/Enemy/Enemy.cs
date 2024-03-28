@@ -4,26 +4,34 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private Rigidbody2D rb;
+    protected Rigidbody2D rb;
+    protected Player player;
 
-    [SerializeField] private float health;
+    [Header("Stats")]
+    [SerializeField] protected int damage;
+    [SerializeField] protected float speed;
+    private float currentSpeed;
+    [SerializeField] protected float health;
 
     [Tooltip("Giật Lùi"), Header("Recoil")]
-    [SerializeField] private float recoilLength;
-    private float recoilTimer;
-    [SerializeField] private float recoilFactor;
-    private bool isRecoiling = false;
+    [SerializeField] protected float recoilLength;
+    protected float recoilTimer;
+    [SerializeField] protected float recoilFactor;
+    protected bool isRecoiling = false;
 
-    private void Start()
+    protected virtual void Start()
     {
         rb = GetComponentInParent<Rigidbody2D>();
+        player = FindObjectOfType<Player>();
+
+        currentSpeed = speed;
     }
-    private void Update()
+    protected virtual void Update()
     {
         Death();
         Recoiling();
     }
-    private void Death()
+    protected void Death()
     {
         if (health <= 0)
         {
@@ -31,21 +39,46 @@ public class Enemy : MonoBehaviour
             //object pool late
         }
     }
-    public void EnemyHit(float damage, Vector2 hitDirection, float hitForce)
+    public virtual void EnemyHit(float damage, Vector2 hitDirection, float hitForce)
     {
         health -= damage;
+        StartCoroutine(OnHit());
         if (!isRecoiling)
         {
             rb.AddForce(-hitForce * recoilFactor * hitDirection);
         }
     }
-    private void Recoiling()
+
+    protected void HitPlayer()
+    {
+        player.GetComponentInChildren<PlayerHealth>().TakeDamage(damage);
+    }
+    protected void OnCollisionStay2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Player") && !player.GetComponentInChildren<PlayerStateList>().Invincible)
+        {
+            other.gameObject.GetComponentInChildren<PlayerHealth>().HitStopTime(0.05f, 5, 0.2f);
+            HitPlayer();
+        }
+    }
+
+    protected IEnumerator OnHit()
+    {
+        speed = 0;
+        yield return new WaitForSeconds(0.5f);
+        speed = currentSpeed;
+    }
+
+    protected void Recoiling()
     {
         if (isRecoiling)
         {
             if (recoilTimer < recoilLength)
             {
-                recoilTimer += Time.deltaTime;
+                if (recoilTimer <= recoilLength)
+                {
+                    recoilTimer += Time.deltaTime;
+                }
             }
             else
             {

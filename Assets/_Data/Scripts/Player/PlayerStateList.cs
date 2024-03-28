@@ -7,8 +7,10 @@ public class PlayerStateList : MonoBehaviour
     public bool IsInAir = false;
     public bool IsDashing = false;
     public bool IsWallSliding = false;
+    public bool Invincible;
     public bool RecoilingX, RecoilingY;
     public bool LookingRight;
+    public bool Healing;
 
     [Header("Unlock Skill")]
     public bool CanDoubleJumpSkill;

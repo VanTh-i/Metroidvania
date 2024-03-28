@@ -25,6 +25,10 @@ public class InputManager : MonoBehaviour
     private bool attackInput;
     public bool AttackInput { get => attackInput; private set => attackInput = value; }
 
+    private bool healInput;
+    public bool HealInput { get => healInput; set => healInput = value; }
+
+
     private void Awake()
     {
         if (instance != null)
@@ -42,6 +46,7 @@ public class InputManager : MonoBehaviour
         GetSpaceInputUp();
         GetDashInput();
         GetAttackInput();
+        GetHealingInput();
     }
 
     public float GetKeyInputHorizontal()
@@ -71,6 +76,11 @@ public class InputManager : MonoBehaviour
     public bool GetAttackInput()
     {
         return attackInput = Input.GetMouseButtonDown(0);
+    }
+
+    public bool GetHealingInput()
+    {
+        return healInput = Input.GetMouseButton(1);
     }
 
 }

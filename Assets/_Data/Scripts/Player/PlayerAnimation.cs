@@ -12,6 +12,8 @@ public class PlayerAnimation : MonoBehaviour
     private const string Dash = "Dash";
     private const string SideWall = "SideWall";
     private const string Attacking = "Attacking";
+    private const string TakeDamage = "TakeDamage";
+    private const string Healing = "Healing";
 
     private void Start()
     {
@@ -47,5 +49,15 @@ public class PlayerAnimation : MonoBehaviour
     public void AttackAnimation()
     {
         anim.SetTrigger(Attacking);
+    }
+
+    public void HurtAnimation()
+    {
+        anim.SetTrigger(TakeDamage);
+    }
+
+    public void HealAnimation(bool isHealing)
+    {
+        anim.SetBool(Healing, isHealing);
     }
 }

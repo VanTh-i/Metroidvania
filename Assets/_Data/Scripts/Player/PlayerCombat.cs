@@ -8,16 +8,17 @@ public class PlayerCombat : MonoBehaviour
     private PlayerAnimation playerAnimation;
     private PlayerController playerController;
     private PlayerStateList playerState;
+    private PlayerMana playerMana;
 
+    [Header("Meele Attack")]
     [SerializeField] private float playerDamage;
-    [SerializeField] private float timeBetweenAttack;
+    [SerializeField, Tooltip("Attack Speed")] private float timeBetweenAttack;
     [SerializeField] private GameObject slashFX;
     private float timeSinceAttack;
     private bool attack;
     private float moveInputY;
 
     [SerializeField] private Transform sideAttackPoint, upAttackPoint, downAttackPoint;
-    //[SerializeField] private Vector2 sideAttackArea, upAttackArea, downAttackArea;
     [SerializeField] private float sideAttackArea, upAttackArea, downAttackArea;
     [SerializeField] private LayerMask attackAbleLayer;
 
@@ -35,6 +36,7 @@ public class PlayerCombat : MonoBehaviour
         playerAnimation = transform.parent.GetComponentInChildren<PlayerAnimation>();
         playerController = transform.parent.GetComponentInChildren<PlayerController>();
         playerState = transform.parent.GetComponentInChildren<PlayerStateList>();
+        playerMana = transform.parent.GetComponentInChildren<PlayerMana>();
     }
 
     private void Update()
@@ -91,6 +93,8 @@ public class PlayerCombat : MonoBehaviour
             {
                 objects.GetComponent<Enemy>().EnemyHit(playerDamage,
                 (transform.parent.position - objects.transform.position).normalized, recoilStrength);
+
+                playerMana.Mana += 0.1f;
             }
         }
 
