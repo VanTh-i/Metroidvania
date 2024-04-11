@@ -44,6 +44,11 @@ public class PlayerHealth : MonoBehaviour
     {
         RestoreTimeScale();
         InvincibleFlash();
+
+    }
+
+    private void FixedUpdate()
+    {
         KnockBack();
     }
 
@@ -111,14 +116,18 @@ public class PlayerHealth : MonoBehaviour
     {
         if (KBCounter > 0)
         {
-            if (playerState.LookingRight)
-            {
-                rb.velocity = new Vector2(-KBForce, KBForce / 4);
-            }
-            else
-            {
-                rb.velocity = new Vector2(KBForce, KBForce / 4);
-            }
+            Vector3 playerScreenPosition = Camera.main.WorldToScreenPoint(transform.parent.position);
+            Vector3 enemyScreenPosition = Camera.main.WorldToScreenPoint(FindObjectOfType<Enemy>().transform.position);
+            Vector2 knockbackDirection = (enemyScreenPosition.x > playerScreenPosition.x) ? Vector2.left : Vector2.right;
+            rb.velocity = knockbackDirection * KBForce;
+            // if (playerState.LookingRight)
+            // {
+            //     rb.velocity = new Vector2(-KBForce, 0);
+            // }
+            // else
+            // {
+            //     rb.velocity = new Vector2(KBForce, 0);
+            // }
             KBCounter -= Time.deltaTime;
         }
     }

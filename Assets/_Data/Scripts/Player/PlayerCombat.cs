@@ -43,6 +43,10 @@ public class PlayerCombat : MonoBehaviour
     {
         GetInput();
     }
+    private void FixedUpdate()
+    {
+        Recoiling();
+    }
     private void GetInput()
     {
         attack = InputManager.Instance.AttackInput;
@@ -61,7 +65,6 @@ public class PlayerCombat : MonoBehaviour
             timeSinceAttack = 0;
             playerAnimation.AttackAnimation();
         }
-        Recoiling();
     }
 
     private void Hit()

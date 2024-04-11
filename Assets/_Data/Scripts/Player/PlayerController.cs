@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -43,7 +42,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("Wall Slide Jump")]
     [SerializeField] private float wallSlidingSpeed;
-    [SerializeField] private Transform wallCheck;
+    [SerializeField] private float wallCheckX;
+    [SerializeField] private Transform wallCheckPoint;
     [SerializeField] private LayerMask wallLayer;
     private float wallJumpingDirection;
     private float wallJumpingTime = 0.2f;
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, 0);
         }
 
-        if (!playerState.IsInAir && coyoteTimeCounter > 0f && jumpBufferCounter > 0) //khi an nut jump
+        if (!playerState.IsInAir && coyoteTimeCounter > 0f && jumpBufferCounter > 0)
         {
             rb.velocity = new Vector3(rb.velocity.x, jumpForce);
             playerState.IsInAir = true;
@@ -173,7 +173,7 @@ public class PlayerController : MonoBehaviour
 
     private bool IsWalled() // kiem tra player co cham vao layer tuong hay ko
     {
-        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
+        return Physics2D.OverlapCircle(wallCheckPoint.position, wallCheckX, wallLayer);
     }
 
     protected internal bool Grounded() //check co dang dung tren mat dat hay khong
@@ -201,10 +201,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (coyoteTimeCounter >= 0)
-            {
-                coyoteTimeCounter -= Time.deltaTime;
-            }
+            coyoteTimeCounter -= Time.deltaTime;
         }
 
         if (jumpInputDown)
@@ -213,10 +210,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (jumpBufferCounter >= 0)
-            {
-                jumpBufferCounter--;
-            }
+            jumpBufferCounter--;
         }
 
         if (!Grounded() && rb.velocity.y < 0)
@@ -273,7 +267,14 @@ public class PlayerController : MonoBehaviour
             float elapsedTime = 0f;
             while (elapsedTime < delay)
             {
-                rb.velocity = jumpForce / 1.9f * exitDir;
+                rb.velocity = 5 * exitDir;
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            while (elapsedTime < delay + 1f && !Grounded())
+            {
+                rb.velocity = moveSpeed * new Vector2(exitDir.x, -0.5f);
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }

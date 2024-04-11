@@ -15808,6 +15808,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4111506383124055299, guid: 625ef4f64807d4a45ad287683699d0bc, type: 3}
+      propertyPath: wallCheckX
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4111506383124055299, guid: 625ef4f64807d4a45ad287683699d0bc, type: 3}
+      propertyPath: wallCheckPoint
+      value: 
+      objectReference: {fileID: 4111506383627154429}
     - target: {fileID: 4111506384211797508, guid: 625ef4f64807d4a45ad287683699d0bc, type: 3}
       propertyPath: manaStorage
       value: 
@@ -15862,6 +15870,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 625ef4f64807d4a45ad287683699d0bc, type: 3}
+--- !u!4 &4111506383627154429 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4111506384766516718, guid: 625ef4f64807d4a45ad287683699d0bc, type: 3}
+  m_PrefabInstance: {fileID: 4111506383627154428}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4579096076335210307
 PrefabInstance:
   m_ObjectHideFlags: 0
