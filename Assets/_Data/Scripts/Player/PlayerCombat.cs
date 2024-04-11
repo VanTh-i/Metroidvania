@@ -110,7 +110,15 @@ public class PlayerCombat : MonoBehaviour
     private void SlashFXAngle(GameObject slashFX, int fXAngle, Transform attackPoint)
     {
         slashFX = Instantiate(slashFX, attackPoint);
-        slashFX.transform.eulerAngles = new Vector3(0, 0, fXAngle);
+        if (playerState.LookingRight)
+        {
+            slashFX.transform.eulerAngles = new Vector3(0, 0, fXAngle);
+        }
+        else
+        {
+            slashFX.transform.eulerAngles = new Vector3(0, 0, -fXAngle);
+        }
+
         slashFX.transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y);
     }
 
