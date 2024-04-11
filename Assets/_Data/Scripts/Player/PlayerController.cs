@@ -99,8 +99,10 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, 0);
         }
 
-        if (!playerState.IsInAir && coyoteTimeCounter > 0f && jumpBufferCounter > 0)
+        //if (!playerState.IsInAir && coyoteTimeCounter > 0 && jumpBufferCounter > 0)
+        if (coyoteTimeCounter > 0 && jumpBufferCounter > 0)
         {
+            coyoteTimeCounter = 0;
             rb.velocity = new Vector3(rb.velocity.x, jumpForce);
             playerState.IsInAir = true;
         }
@@ -145,7 +147,8 @@ public class PlayerController : MonoBehaviour
     {
         if (playerState.IsWallSliding)
         {
-            wallJumpingDirection = -transform.localScale.x;
+            //wallJumpingDirection = -transform.localScale.x;
+            wallJumpingDirection = -moveInput;
             wallJumpingCounter = wallJumpingTime;
 
         }
@@ -159,14 +162,15 @@ public class PlayerController : MonoBehaviour
             playerState.IsInAir = true;
             playerState.IsWallSliding = false;
             doubleJumpCounter = 0;
+
             rb.velocity = new Vector2(wallJumpingDirection * jumpForce, jumpForce);
             wallJumpingCounter = 0f;
 
             if (transform.localScale.x != wallJumpingDirection)
             {
-                Vector3 localScale = transform.localScale;
+                Vector3 localScale = transform.parent.localScale;
                 localScale.x *= -1f;
-                transform.localScale = localScale;
+                transform.parent.localScale = localScale;
             }
         }
     }
@@ -293,5 +297,12 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(delay);
         playerState.CutScene = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(groundCheckPoint.position, groundCheckX);
+        Gizmos.DrawWireSphere(wallCheckPoint.position, wallCheckX);
     }
 }

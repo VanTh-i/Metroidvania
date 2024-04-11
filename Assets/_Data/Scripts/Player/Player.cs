@@ -5,14 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private PlayerController playerController;
-    private PlayerAnimation playerAnimation;
     private PlayerCombat playerCombat;
     private PlayerHealth playerHealth;
 
     private void Start()
     {
         playerController = GetComponentInChildren<PlayerController>();
-        playerAnimation = GetComponentInChildren<PlayerAnimation>();
         playerCombat = GetComponentInChildren<PlayerCombat>();
         playerHealth = GetComponentInChildren<PlayerHealth>();
     }
@@ -21,6 +19,7 @@ public class Player : MonoBehaviour
     {
         if (playerController.playerState.IsDashing) return;
         if (playerController.playerState.CutScene) return;
+        if (playerController.playerState.Healing) return;
         if (playerHealth.restoreTime) return;
 
         playerController.Moving();
@@ -32,16 +31,5 @@ public class Player : MonoBehaviour
         playerCombat.Attack();
 
         playerHealth.Heal();
-
-        //Animation();
-
     }
-
-    // private void Animation()
-    // {
-    //     playerAnimation.RunAnimation();
-    //     playerAnimation.JumpAnimation();
-    //     playerAnimation.FallAnimation();
-    //     playerAnimation.WallSideAnimation();
-    // }
 }

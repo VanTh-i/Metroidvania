@@ -259,7 +259,7 @@ RectTransform:
   m_Children:
   - {fileID: 2175119136380857938}
   m_Father: {fileID: 2175119137510345825}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -319,8 +319,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2175119136790876902}
   - {fileID: 2175119138146258048}
+  - {fileID: 2175119136790876902}
   - {fileID: 130150002734550525}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -403,7 +403,7 @@ GameObject:
   - component: {fileID: 2175119137736776719}
   - component: {fileID: 2175119137736776718}
   m_Layer: 5
-  m_Name: Mana (1)
+  m_Name: Mana Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -500,7 +500,7 @@ RectTransform:
   - {fileID: 2175119137736776717}
   - {fileID: 2175119136291614642}
   m_Father: {fileID: 2175119137510345825}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}

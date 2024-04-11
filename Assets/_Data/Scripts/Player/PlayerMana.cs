@@ -11,6 +11,7 @@ public class PlayerMana : MonoBehaviour
 
     private void Start()
     {
+        //manaStorage = FindObjectOfType<UIManager>().transform.GetChild(0).transform.GetChild(1).GetComponent<Image>();
         Mana = mana;
         manaStorage.fillAmount = mana;
     }
