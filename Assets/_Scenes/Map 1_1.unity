@@ -808,8 +808,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -7.4148006, y: -8.63945, z: 0}
-    m_Extent: {x: 10.562, y: 10.472851, z: 0}
+    m_Center: {x: -7.41105, y: -8.63865, z: 0}
+    m_Extent: {x: 10.56725, y: 10.46935, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -8843,8 +8843,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -1.43875, y: -20.68745, z: 0}
-    m_Extent: {x: 2.48255, y: 21.64495, z: 0}
+    m_Center: {x: -1.43985, y: -20.69445, z: 0}
+    m_Extent: {x: 2.4825501, y: 21.64035, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -9697,8 +9697,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -5.48035, y: -20.52155, z: 0}
-    m_Extent: {x: 6.27865, y: 21.51445, z: 0}
+    m_Center: {x: -5.47865, y: -20.5135, z: 0}
+    m_Extent: {x: 6.28065, y: 21.5206, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -15457,7 +15457,7 @@ Transform:
   - {fileID: 87440011}
   - {fileID: 1818269042}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1969421052
 PrefabInstance:
@@ -15786,8 +15786,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -7.2821, y: -12.989249, z: 0}
-    m_Extent: {x: 8.3099, y: 13.93995, z: 0}
+    m_Center: {x: -7.28275, y: -12.9890995, z: 0}
+    m_Extent: {x: 8.31725, y: 13.9445, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -16457,7 +16457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 559285850514853806, guid: 05c3c756cb50fcc459e735b53bf94059, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 559285850514853806, guid: 05c3c756cb50fcc459e735b53bf94059, type: 3}
       propertyPath: m_LocalPosition.x
@@ -16686,6 +16686,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4111506383124055299, guid: 625ef4f64807d4a45ad287683699d0bc, type: 3}
+      propertyPath: coyoteTime
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4111506383124055299, guid: 625ef4f64807d4a45ad287683699d0bc, type: 3}
+      propertyPath: wallSlidingSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4111506383124055299, guid: 625ef4f64807d4a45ad287683699d0bc, type: 3}
+      propertyPath: wallJumpingForce.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4111506383124055299, guid: 625ef4f64807d4a45ad287683699d0bc, type: 3}
+      propertyPath: wallJumpingForce.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4111506383124055299, guid: 625ef4f64807d4a45ad287683699d0bc, type: 3}
+      propertyPath: wallJumpingDuration
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4111506384096876219, guid: 625ef4f64807d4a45ad287683699d0bc, type: 3}
+      propertyPath: CanDoubleJumpSkill
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4111506384211797508, guid: 625ef4f64807d4a45ad287683699d0bc, type: 3}
       propertyPath: manaStorage
       value: 

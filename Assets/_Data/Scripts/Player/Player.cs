@@ -25,11 +25,18 @@ public class Player : MonoBehaviour
         playerController.Moving();
         playerController.Jump();
         playerController.WallSlide();
-        playerController.WallJump();
+        playerController.StartWallJump();
         playerController.StartDash();
 
         playerCombat.Attack();
 
         playerHealth.Heal();
+    }
+
+    private void FixedUpdate()
+    {
+        if (playerController.playerState.IsDashing) return;
+
+        playerController.WallJump();
     }
 }

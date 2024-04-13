@@ -45,9 +45,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float wallCheckX;
     [SerializeField] private Transform wallCheckPoint;
     [SerializeField] private LayerMask wallLayer;
-    private float wallJumpingDirection;
-    private float wallJumpingTime = 0.2f;
-    private float wallJumpingCounter;
+    [SerializeField] private float wallJumpingDuration;
+    private bool wallJumping;
 
     private void Start()
     {
@@ -112,7 +111,7 @@ public class PlayerController : MonoBehaviour
 
     private void DoubleJump()
     {
-        if (playerState.IsInAir && !Grounded() && jumpInputDown && doubleJumpCounter < doubleJump
+        if (coyoteTimeCounter < 0 && !Grounded() && jumpInputDown && doubleJumpCounter < doubleJump
             && playerState.CanDoubleJumpSkill) // double jump
         {
             doubleJumpCounter++;
@@ -137,42 +136,31 @@ public class PlayerController : MonoBehaviour
     }
     protected internal bool IsWallSlide() // co dang truot tuong hay khong
     {
-        if (IsWalled() && !Grounded() && moveInput != 0f && playerState.CanWallSliding && !jumpInputDown)
+        if (IsWalled() && !Grounded() && moveInput != 0f && playerState.CanWallSliding)
         {
             return true;
         }
         else return false;
     }
+
     public void WallJump()
     {
-        if (playerState.IsWallSliding)
+        if (wallJumping)
         {
-            //wallJumpingDirection = -transform.localScale.x;
-            wallJumpingDirection = -moveInput;
-            wallJumpingCounter = wallJumpingTime;
-
+            rb.velocity = new Vector2(-moveInput * jumpForce / 1.5f, jumpForce);
         }
-        else
+    }
+    public void StartWallJump()
+    {
+        if (jumpInputDown && playerState.IsWallSliding)
         {
-            wallJumpingCounter -= Time.deltaTime;
+            wallJumping = true;
+            Invoke(nameof(StopWallJump), wallJumpingDuration);
         }
-
-        if (jumpInputDown && wallJumpingCounter > 0f)
-        {
-            playerState.IsInAir = true;
-            playerState.IsWallSliding = false;
-            doubleJumpCounter = 0;
-
-            rb.velocity = new Vector2(wallJumpingDirection * jumpForce, jumpForce);
-            wallJumpingCounter = 0f;
-
-            if (transform.localScale.x != wallJumpingDirection)
-            {
-                Vector3 localScale = transform.parent.localScale;
-                localScale.x *= -1f;
-                transform.parent.localScale = localScale;
-            }
-        }
+    }
+    private void StopWallJump()
+    {
+        wallJumping = false;
     }
 
     private bool IsWalled() // kiem tra player co cham vao layer tuong hay ko
@@ -217,7 +205,7 @@ public class PlayerController : MonoBehaviour
             jumpBufferCounter--;
         }
 
-        if (!Grounded() && rb.velocity.y < 0)
+        if (!Grounded() && rb.velocity.y != 0)
         {
             playerState.IsInAir = true;
         }
