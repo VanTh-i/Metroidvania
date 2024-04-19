@@ -31,11 +31,15 @@ public class InputManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null)
+        if (instance != null && instance != this)
         {
-            Debug.LogError("has more 2 input manager");
+            Destroy(gameObject);
         }
-        instance = this;
+        else
+        {
+            instance = this;
+        }
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Update()

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransition : MonoBehaviour
 {
-    [SerializeField] private Transform player;
+    //[SerializeField] private Transform player;
 
     [SerializeField] private string transitionTo;
     [SerializeField] private Transform startPoint;
@@ -16,8 +16,8 @@ public class SceneTransition : MonoBehaviour
     {
         if (transitionTo == GameManager.Instance.transitionedFromScene)
         {
-            player.position = startPoint.position;
-            StartCoroutine(player.gameObject.GetComponentInChildren<PlayerController>().WalkIntoNewScene(exitDirection, exitTime));
+            Player.Instance.transform.position = startPoint.position;
+            StartCoroutine(Player.Instance.gameObject.GetComponentInChildren<PlayerController>().WalkIntoNewScene(exitDirection, exitTime));
         }
         StartCoroutine(UIManager.Instance.screenFader.Fade(ScreenFader.FadeDirection.Out));
     }
@@ -27,7 +27,7 @@ public class SceneTransition : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             GameManager.Instance.transitionedFromScene = SceneManager.GetActiveScene().name;
-            player.gameObject.GetComponentInChildren<PlayerController>().playerState.CutScene = true;
+            Player.Instance.gameObject.GetComponentInChildren<PlayerController>().playerState.CutScene = true;
 
             StartCoroutine(UIManager.Instance.screenFader.FadeAndLoadScene(ScreenFader.FadeDirection.In, transitionTo));
         }

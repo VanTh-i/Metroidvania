@@ -13,7 +13,7 @@ public class HeartController : MonoBehaviour
 
     private void Start()
     {
-        playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<PlayerHealth>();
+        playerHealth = Player.Instance.GetComponentInChildren<PlayerHealth>();
         heartContainers = new GameObject[playerHealth.maxHealth];
         heartFills = new Image[playerHealth.maxHealth];
 
@@ -27,14 +27,18 @@ public class HeartController : MonoBehaviour
     {
         for (int i = 0; i < heartContainers.Length; i++)
         {
-            if (i < playerHealth.maxHealth)
+            if (heartContainers[i] != null && heartContainers[i].activeSelf)
             {
-                heartContainers[i].SetActive(true);
+                if (i < playerHealth.maxHealth)
+                {
+                    heartContainers[i].SetActive(true);
+                }
+                else
+                {
+                    heartContainers[i].SetActive(false);
+                }
             }
-            else
-            {
-                heartContainers[i].SetActive(false);
-            }
+
         }
     }
 
@@ -42,14 +46,18 @@ public class HeartController : MonoBehaviour
     {
         for (int i = 0; i < heartFills.Length; i++)
         {
-            if (i < playerHealth.health)
+            if (heartFills[i] != null)
             {
-                heartFills[i].fillAmount = 1;
+                if (i < playerHealth.health)
+                {
+                    heartFills[i].fillAmount = 1;
+                }
+                else
+                {
+                    heartFills[i].fillAmount = 0;
+                }
             }
-            else
-            {
-                heartFills[i].fillAmount = 0;
-            }
+
         }
     }
 

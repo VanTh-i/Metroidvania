@@ -98,7 +98,6 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, 0);
         }
 
-        //if (!playerState.IsInAir && coyoteTimeCounter > 0 && jumpBufferCounter > 0)
         if (coyoteTimeCounter > 0 && jumpBufferCounter > 0)
         {
             coyoteTimeCounter = 0;
@@ -257,16 +256,23 @@ public class PlayerController : MonoBehaviour
         if (exitDir.y > 0)
         {
             float elapsedTime = 0f;
-            while (elapsedTime < delay)
+            while (elapsedTime < 0.5f)
             {
                 rb.velocity = 5 * exitDir;
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
 
-            while (elapsedTime < delay + 1f && !Grounded())
+            while (elapsedTime < 1f)
             {
-                rb.velocity = moveSpeed * new Vector2(exitDir.x, -0.5f);
+                if (!Grounded())
+                {
+                    rb.velocity = moveSpeed * new Vector2(exitDir.x, -0.5f);
+                }
+                else
+                {
+                    rb.velocity = Vector2.zero;
+                }
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }

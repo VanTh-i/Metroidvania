@@ -18,6 +18,7 @@ public class PlayerHealth : MonoBehaviour
     protected internal bool restoreTime;
     private float restoreTimeSpeed;
     [SerializeField] private float invincibleTime;
+    private bool canFlash = true;
 
     [Header("Healing")]
     [SerializeField] private float timeToHeal;
@@ -100,7 +101,6 @@ public class PlayerHealth : MonoBehaviour
         Health -= Mathf.RoundToInt(damage);
         StartCoroutine(StopTakingDamage());
 
-        Debug.Log("- " + damage);
     }
     private IEnumerator StopTakingDamage()
     {
@@ -120,22 +120,35 @@ public class PlayerHealth : MonoBehaviour
             Vector3 enemyScreenPosition = Camera.main.WorldToScreenPoint(FindObjectOfType<Enemy>().transform.position);
             Vector2 knockbackDirection = (enemyScreenPosition.x > playerScreenPosition.x) ? Vector2.left : Vector2.right;
             rb.velocity = knockbackDirection * KBForce;
-            // if (playerState.LookingRight)
-            // {
-            //     rb.velocity = new Vector2(-KBForce, 0);
-            // }
-            // else
-            // {
-            //     rb.velocity = new Vector2(KBForce, 0);
-            // }
             KBCounter -= Time.deltaTime;
         }
     }
 
     private void InvincibleFlash()
     {
-        sr.material.color = playerState.Invincible ?
-            Color.Lerp(Color.white, Color.red, Mathf.PingPong(Time.time * invincibleTime, 0.3f)) : Color.white;
+        if (playerState.Invincible)
+        {
+            if (canFlash)
+            {
+                sr.enabled = false;
+                StartCoroutine(Flash());
+            }
+            else
+            {
+                sr.enabled = true;
+            }
+        }
+        else
+        {
+            sr.enabled = true;
+        }
+
+    }
+    private IEnumerator Flash()
+    {
+        canFlash = false;
+        yield return new WaitForSeconds(0.2f);
+        canFlash = true;
     }
 
     private void RestoreTimeScale()
