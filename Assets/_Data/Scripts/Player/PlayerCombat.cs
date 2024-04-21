@@ -94,7 +94,7 @@ public class PlayerCombat : MonoBehaviour
         {
             if (objects.GetComponent<Enemy>() != null)
             {
-                objects.GetComponent<Enemy>().EnemyHit(playerDamage,
+                objects.GetComponent<Enemy>().EnemyTakeDamage(playerDamage,
                 (transform.parent.position - objects.transform.position).normalized, recoilStrength);
 
                 playerMana.Mana += 0.1f;

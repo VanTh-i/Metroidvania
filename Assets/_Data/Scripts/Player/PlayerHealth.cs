@@ -170,7 +170,6 @@ public class PlayerHealth : MonoBehaviour
 
     public void HitStopTime(float newTimeScale, int restoreSpeed, float delay)
     {
-
         restoreTimeSpeed = restoreSpeed;
         Time.timeScale = newTimeScale;
 

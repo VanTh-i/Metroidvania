@@ -8,10 +8,10 @@ public class Enemy : MonoBehaviour
     protected Player player;
 
     [Header("Stats")]
+    [SerializeField] protected float health;
     [SerializeField] protected int damage;
     [SerializeField] protected float speed;
     private float currentSpeed;
-    [SerializeField] protected float health;
 
     [Tooltip("Giật Lùi"), Header("Recoil")]
     [SerializeField] protected float recoilLength;
@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour
             //object pool late
         }
     }
-    public virtual void EnemyHit(float damage, Vector2 hitDirection, float hitForce)
+    public virtual void EnemyTakeDamage(float damage, Vector2 hitDirection, float hitForce)
     {
         health -= damage;
         StartCoroutine(OnHit());
@@ -48,26 +48,40 @@ public class Enemy : MonoBehaviour
             rb.AddForce(-hitForce * recoilFactor * hitDirection);
         }
     }
-
-    protected void HitPlayer()
-    {
-        player.GetComponentInChildren<PlayerHealth>().TakeDamage(damage);
-    }
-    protected void OnCollisionStay2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("Player") && !player.GetComponentInChildren<PlayerStateList>().Invincible)
-        {
-            other.gameObject.GetComponentInChildren<PlayerHealth>().HitStopTime(0.05f, 5, 0.2f);
-            HitPlayer();
-        }
-    }
-
     protected IEnumerator OnHit()
     {
         speed = 0;
         yield return new WaitForSeconds(0.5f);
         speed = currentSpeed;
     }
+
+    #region Hit player
+    protected void OnCollisionStay2D(Collision2D other) // cham phai nguoi choi
+    {
+        if (other.gameObject.CompareTag("Player") && !player.GetComponentInChildren<PlayerStateList>().Invincible)
+        {
+            other.gameObject.GetComponentInChildren<PlayerHealth>().HitStopTime(0.05f, 5, 0.2f);
+            other.gameObject.GetComponentInChildren<PlayerHealth>().TakeDamage(damage);
+            //HitPlayer();
+        }
+    }
+    protected void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+        }
+
+    }
+    protected void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
+
+    }
+    #endregion
 
     protected void Recoiling()
     {
