@@ -28,7 +28,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float KBForce;
     private float KBCounter;
     [SerializeField] private float KBTotalTime;
-
+    private Vector2 enemyCollisionPosition;
 
     private void Start()
     {
@@ -109,16 +109,22 @@ public class PlayerHealth : MonoBehaviour
         KBCounter = KBTotalTime;
         yield return new WaitForSeconds(invincibleTime);
         playerState.Invincible = false;
+    }
 
-
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.GetComponent<Enemy>() != null)
+        {
+            enemyCollisionPosition = other.transform.position;
+        }
     }
     private void KnockBack()
     {
         if (KBCounter > 0)
         {
-            Vector3 playerScreenPosition = Camera.main.WorldToScreenPoint(transform.parent.position);
-            Vector3 enemyScreenPosition = Camera.main.WorldToScreenPoint(FindObjectOfType<Enemy>().transform.position);
-            Vector2 knockbackDirection = (enemyScreenPosition.x > playerScreenPosition.x) ? Vector2.left : Vector2.right;
+            Vector3 playerPosition = transform.parent.position;
+            Vector3 enemyPosition = enemyCollisionPosition;
+            Vector2 knockbackDirection = (enemyPosition.x > playerPosition.x) ? Vector2.left : Vector2.right;
             rb.velocity = knockbackDirection * KBForce;
             KBCounter -= Time.deltaTime;
         }

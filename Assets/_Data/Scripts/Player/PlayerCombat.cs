@@ -71,22 +71,23 @@ public class PlayerCombat : MonoBehaviour
     {
         if (moveInputY == 0 || moveInputY < 0 && playerController.Grounded())
         {
+            int recoilDirLeftOrRight = playerState.LookingRight ? 1 : -1;
             SlashFXAngle(slashFX, 0, sideAttackPoint);
-            DealingDamage(sideAttackPoint, sideAttackArea, ref playerState.RecoilingX, recoilXSpeed);
+            DealingDamage(sideAttackPoint, sideAttackArea, ref playerState.RecoilingX, Vector2.right * recoilDirLeftOrRight);
         }
         else if (moveInputY > 0)
         {
             SlashFXAngle(slashFX, 90, upAttackPoint);
-            DealingDamage(upAttackPoint, upAttackArea, ref playerState.RecoilingY, recoilYSpeed);
+            DealingDamage(upAttackPoint, upAttackArea, ref playerState.RecoilingY, Vector2.up);
         }
         else if (moveInputY < 0 && playerState.IsInAir)
         {
             SlashFXAngle(slashFX, -90, downAttackPoint);
-            DealingDamage(downAttackPoint, downAttackArea, ref playerState.RecoilingY, recoilYSpeed);
+            DealingDamage(downAttackPoint, downAttackArea, ref playerState.RecoilingY, Vector2.down);
         }
     }
 
-    private void DealingDamage(Transform attackPoint, float attackArea, ref bool recoilDir, float recoilStrength)
+    private void DealingDamage(Transform attackPoint, float attackArea, ref bool isRecoilDir, Vector2 recoilDir)
     {
         Collider2D[] objectsToHit = Physics2D.OverlapCircleAll(attackPoint.position, attackArea, attackAbleLayer);
 
@@ -94,8 +95,7 @@ public class PlayerCombat : MonoBehaviour
         {
             if (objects.GetComponent<Enemy>() != null)
             {
-                objects.GetComponent<Enemy>().EnemyTakeDamage(playerDamage,
-                (transform.parent.position - objects.transform.position).normalized, recoilStrength);
+                objects.GetComponent<Enemy>().EnemyTakeDamage(playerDamage, recoilDir);
 
                 playerMana.Mana += 0.1f;
             }
@@ -103,7 +103,7 @@ public class PlayerCombat : MonoBehaviour
 
         if (objectsToHit.Length > 0)
         {
-            recoilDir = true;
+            isRecoilDir = true;
         }
     }
 

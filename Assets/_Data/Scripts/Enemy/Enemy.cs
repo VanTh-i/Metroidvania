@@ -6,12 +6,13 @@ public class Enemy : MonoBehaviour
 {
     protected Rigidbody2D rb;
     protected Player player;
+    protected SpriteRenderer sr;
 
     [Header("Stats")]
     [SerializeField] protected float health;
     [SerializeField] protected int damage;
     [SerializeField] protected float speed;
-    private float currentSpeed;
+    protected float currentSpeed;
 
     [Tooltip("Giật Lùi"), Header("Recoil")]
     [SerializeField] protected float recoilLength;
@@ -19,33 +20,44 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected float recoilFactor;
     protected bool isRecoiling = false;
 
+
+
     protected virtual void Start()
     {
-        rb = GetComponentInParent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
         player = FindObjectOfType<Player>();
 
         currentSpeed = speed;
     }
     protected virtual void Update()
     {
+        //UpdateEnemyState();
         Death();
         Recoiling();
     }
-    protected void Death()
+
+    protected virtual void UpdateEnemyState()
+    {
+        // for override
+    }
+
+    protected virtual void Death()
     {
         if (health <= 0)
         {
-            Destroy(gameObject);
-            //object pool late
+            Destroy(gameObject, 1f);
+            // TODO: object pool late
         }
     }
-    public virtual void EnemyTakeDamage(float damage, Vector2 hitDirection, float hitForce)
+    public virtual void EnemyTakeDamage(float damage, Vector2 hitDirection)
     {
+        isRecoiling = true;
         health -= damage;
         StartCoroutine(OnHit());
-        if (!isRecoiling)
+        if (isRecoiling)
         {
-            rb.AddForce(-hitForce * recoilFactor * hitDirection);
+            rb.velocity = hitDirection * recoilFactor;
         }
     }
     protected IEnumerator OnHit()
@@ -87,18 +99,19 @@ public class Enemy : MonoBehaviour
     {
         if (isRecoiling)
         {
-            if (recoilTimer < recoilLength)
+            if (recoilTimer <= recoilLength)
             {
-                if (recoilTimer <= recoilLength)
-                {
-                    recoilTimer += Time.deltaTime;
-                }
+                recoilTimer += Time.deltaTime;
             }
             else
             {
-                isRecoiling = true;
+                isRecoiling = false;
                 recoilTimer = 0;
             }
+        }
+        else
+        {
+            UpdateEnemyState();
         }
     }
 }
